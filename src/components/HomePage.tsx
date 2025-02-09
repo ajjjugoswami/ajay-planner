@@ -1,10 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { NotebookPen, CalendarCheck } from "lucide-react";
+import { motion } from "framer-motion";
+import { NotebookPen, CalendarCheck, Sparkles } from "lucide-react";
 
 const HomePage = () => {
+  const [helloMessage, setHelloMessage] = useState("Hello! Welcome to Your Dashboard");
+
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      {/* Animated Hello Message */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="mb-8 flex items-center gap-3 text-3xl font-bold text-gray-800 dark:text-gray-200"
+      >
+        <motion.div
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        >
+          <Sparkles className="w-8 h-8 text-yellow-500 dark:text-yellow-300" />
+        </motion.div>
+        {helloMessage}
+      </motion.div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Link href="/planner">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">

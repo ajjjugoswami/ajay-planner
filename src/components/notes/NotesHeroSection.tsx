@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit3 } from "lucide-react";
 
 const NotesHeroSection = () => {
   const [notes, setNotes] = useState<any>(() => {
@@ -11,6 +11,7 @@ const NotesHeroSection = () => {
   const [noteText, setNoteText] = useState("");
   const [importance, setImportance] = useState("Important");
   const [noteColor, setNoteColor] = useState("bg-gray-700");
+  const [editIndex, setEditIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -20,17 +21,36 @@ const NotesHeroSection = () => {
 
   const handleAddNote = () => {
     if (noteText.trim() === "") return;
-    const newNotes = [
-      ...notes,
-      { text: noteText, importance, color: noteColor },
-    ];
-    setNotes(newNotes);
+
+    if (editIndex !== null) {
+      const updatedNotes = notes.map((note: any, index: number) =>
+        index === editIndex
+          ? { text: noteText, importance, color: noteColor }
+          : note
+      );
+      setNotes(updatedNotes);
+      setEditIndex(null);
+    } else {
+      const newNotes = [
+        ...notes,
+        { text: noteText, importance, color: noteColor },
+      ];
+      setNotes(newNotes);
+    }
     setNoteText("");
   };
 
   const handleDeleteNote = (index: number) => {
     const newNotes = notes.filter((_: any, i: number) => i !== index);
     setNotes(newNotes);
+  };
+
+  const handleEditNote = (index: number) => {
+    const noteToEdit = notes[index];
+    setNoteText(noteToEdit.text);
+    setImportance(noteToEdit.importance);
+    setNoteColor(noteToEdit.color);
+    setEditIndex(index);
   };
 
   return (
@@ -90,7 +110,7 @@ const NotesHeroSection = () => {
           className="mt-6 p-2 bg-blue-500 text-white rounded-lg w-full"
           onClick={handleAddNote}
         >
-          Add Note
+          {editIndex !== null ? "Update Note" : "Add Note"}
         </button>
       </div>
 
@@ -121,12 +141,20 @@ const NotesHeroSection = () => {
                   {note.importance}
                 </span>
                 <p className="mt-2 text-white">{note.text}</p>
-                <button
-                  className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
-                  onClick={() => handleDeleteNote(index)}
-                >
-                  <Trash2 size={16} />
-                </button>
+                <div className="absolute top-2 right-2 flex gap-2">
+                  <button
+                    className="text-green-500 hover:text-green-400"
+                    onClick={() => handleEditNote(index)}
+                  >
+                    <Edit3 size={16} />
+                  </button>
+                  <button
+                    className="text-red-500 hover:text-red-400"
+                    onClick={() => handleDeleteNote(index)}
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
