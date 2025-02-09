@@ -81,44 +81,67 @@ const PlannerPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 flex flex-col items-center">
-      <h1 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-6 text-center">
+      {/* <h1 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-6 text-center">
         📝 Planner
-      </h1>
+      </h1> */}
 
-      <div className="flex flex-wrap justify-center gap-2 w-full">
-        <input
-          type="text"
-          className="p-2 w-full sm:w-[300px] rounded-lg border dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500"
-          placeholder="Title"
-          value={newTask.title}
-          onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-        />
-        <input
-          type="text"
-          className="p-2 w-full sm:w-[250px] rounded-lg border dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500"
-          placeholder="Description"
-          value={newTask.description}
-          onChange={(e) =>
-            setNewTask({ ...newTask, description: e.target.value })
-          }
-        />
-        <select
-          className="p-2 rounded-lg border dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500"
-          value={newTask.priority}
-          onChange={(e) => setNewTask({ ...newTask, priority: e.target.value })}
-        >
-          <option value="low">Low</option>
-          <option value="important">Important</option>
-        </select>
-        <button
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500 w-full sm:w-auto"
-          onClick={addTask}
-        >
-          Add
-        </button>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-5xl">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white text-center mb-4">
+          ✏️ Add a New Task
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="relative">
+            <input
+              type="text"
+              className="p-3 pl-10 w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              placeholder="Task Title"
+              value={newTask.title}
+              onChange={(e) =>
+                setNewTask({ ...newTask, title: e.target.value })
+              }
+            />
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+              📌
+            </span>
+          </div>
+
+          <div className="relative">
+            <input
+              type="text"
+              className="p-3 pl-10 w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+              placeholder="Task Description"
+              value={newTask.description}
+              onChange={(e) =>
+                setNewTask({ ...newTask, description: e.target.value })
+              }
+            />
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+              📝
+            </span>
+          </div>
+
+          <select
+            className="p-3 w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+            value={newTask.priority}
+            onChange={(e) =>
+              setNewTask({ ...newTask, priority: e.target.value })
+            }
+          >
+            <option value="low">⭐ Low Priority</option>
+            <option value="important">🚀 High Priority</option>
+          </select>
+
+          <button
+            className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 py-3 rounded-lg font-semibold hover:scale-105 transition-transform"
+            onClick={addTask}
+          >
+            ➕ Add Task
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mt-6 w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6   mt-6 w-full">
         {Object.entries(tasks).map(([status, taskList]: any) => (
           <div
             key={status}
@@ -148,11 +171,11 @@ const PlannerPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="bg-gray-200 dark:bg-gray-700 p-3 rounded-md flex flex-col sm:flex-row justify-between items-center"
+                    className="bg-gray-200 relative dark:bg-gray-700 p-3 rounded-md flex flex-col sm:flex-row justify-between items-center"
                   >
                     <div className="flex-1 text-center sm:text-left">
-                    <span
-                        className={`text-xs px-2 py-1 rounded-full ${
+                      <span
+                        className={`text-xs px-2 py-1 rounded-[5px] absolute top-[-10px] left-0 ${
                           task.priority === "important"
                             ? "bg-red-500 text-white"
                             : "bg-yellow-400 text-black"
@@ -160,13 +183,12 @@ const PlannerPage = () => {
                       >
                         {task.priority}
                       </span>
-                      <span className="text-gray-800 dark:text-gray-300 font-bold block">
+                      <span className="text-white text-[20px] dark:text-gray-300 mt-2 font-bold block">
                         {task.title}
                       </span>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <p className="text-[16px] text-gray-600 dark:text-gray-400">
                         {task.description}
                       </p>
-                      
                     </div>
                     <div className="mt-2 sm:mt-0 flex space-x-2">
                       {status !== "todo" && (
