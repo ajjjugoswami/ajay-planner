@@ -6,7 +6,7 @@ export const Layout = (props: any) => {
   return (
     <>
       <Head>
-        <title>Ajay Planner</title>
+        <title>Aj-Planner</title>
       </Head>
       <Header />
       <div className="min-h-screen">
