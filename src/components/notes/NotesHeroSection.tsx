@@ -58,12 +58,13 @@ const NotesHeroSection = () => {
       {/* Left Section */}
       <div className="w-full md:w-1/2 p-4 bg-gray-800 rounded-[16px]">
         <textarea
-          className="w-full p-2 rounded-lg bg-gray-700 text-white"
+          className="w-full p-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
           placeholder="Write your note here..."
           value={noteText}
           rows={8}
           onChange={(e) => setNoteText(e.target.value)}
         ></textarea>
+
         <div className="mt-4 flex gap-4 flex-wrap">
           {["Important", "Low Importance", "Other"].map((level) => (
             <label
