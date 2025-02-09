@@ -4,7 +4,9 @@ import { motion } from "framer-motion";
 import { NotebookPen, CalendarCheck, Sparkles } from "lucide-react";
 
 const HomePage = () => {
-  const [helloMessage, setHelloMessage] = useState("Hello! Welcome to Your Dashboard");
+  const [helloMessage, setHelloMessage] = useState(
+    "Hello! Welcome to Your Dashboard"
+  );
 
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
