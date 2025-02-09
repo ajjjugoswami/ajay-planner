@@ -15,7 +15,7 @@ const Header = () => {
       case "/planner/":
         return { icon: <Calendar className="w-6 h-6" />, text: "Planner" };
       default:
-        return { icon: "🚀", text: "Reminder & Planner" };
+        return { icon: "🚀", text: "Note Sync" };
     }
   };
 
