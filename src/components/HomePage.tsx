@@ -8,7 +8,7 @@ const HomePage = () => {
       <Link href="/planner">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
             <h2 className="text-2xl font-semibold text-purple-600 dark:text-purple-400">
-              📝 Planner
+              📝 Planners
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
               Plan your tasks and stay organized.
