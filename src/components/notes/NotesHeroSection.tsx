@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Trash2, Edit3 } from "lucide-react";
+import Masonry from "react-masonry-css";
 
 const NotesHeroSection = () => {
   const [notes, setNotes] = useState<any>(() => {
@@ -58,6 +59,12 @@ const NotesHeroSection = () => {
     filter === "All"
       ? notes
       : notes.filter((note: any) => note.importance === filter);
+
+  const breakpointColumns = {
+    default: 3, // 3 columns for large screens
+    1024: 2, // 2 columns for medium screens
+    640: 1, // 1 column for small screens
+  };
 
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4 bg-gray-900 text-white min-h-screen">
@@ -142,7 +149,11 @@ const NotesHeroSection = () => {
         {filteredNotes.length === 0 ? (
           <p className="text-gray-400">No notes found.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Masonry
+            breakpointCols={breakpointColumns}
+            className="flex gap-4"
+            columnClassName="masonry-column"
+          >
             {filteredNotes.map((note: any, index: number) => (
               <div
                 key={index}
@@ -176,7 +187,7 @@ const NotesHeroSection = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </Masonry>
         )}
       </div>
     </div>
