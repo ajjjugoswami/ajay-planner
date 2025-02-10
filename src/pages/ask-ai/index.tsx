@@ -50,9 +50,16 @@ export default function ChatUI() {
         contents: [{ role: "user", parts: [{ text: input }] }],
       });
 
-      const botReply =
+      let botReply =
         response?.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         "Sorry, I couldn't understand that.";
+
+      // Preserve code blocks and formatting
+      botReply = botReply
+        .replace(/```([\s\S]*?)```/g, `<pre><code>$1</code></pre>`) // Preserve code blocks
+        .replace(/\n/g, "<br>") // Preserve new lines
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold text
+        .replace(/\*(.*?)\*/g, "<em>$1</em>"); // Italic text
 
       setChats((prev) =>
         prev.map((chat) =>
@@ -130,8 +137,8 @@ export default function ChatUI() {
                     <div className="p-3 bg-blue-600 text-right self-end ml-auto rounded-lg max-w-[75%]">
                       {chat.user}
                     </div>
-                    <div className="p-3 bg-gray-700 text-left rounded-lg max-w-[75%]">
-                      {chat.bot}
+                    <div className="p-3 bg-gray-700 text-left rounded-lg max-w-[85%]">
+                      <div dangerouslySetInnerHTML={{ __html: chat.bot }} />
                     </div>
                   </div>
                 ))}
