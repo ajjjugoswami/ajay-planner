@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { NotebookPen, CalendarCheck, Sparkles } from "lucide-react";
+import {
+  NotebookPen,
+  CalendarCheck,
+  Sparkles,
+  MessageSquare,
+} from "lucide-react";
 
 const HomePage = () => {
   const [helloMessage, setHelloMessage] = useState(
@@ -27,7 +32,7 @@ const HomePage = () => {
         {helloMessage}
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <Link href="/planner">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
             <NotebookPen className="w-12 h-12 mx-auto text-purple-600 dark:text-purple-400" />
@@ -39,6 +44,7 @@ const HomePage = () => {
             </p>
           </div>
         </Link>
+
         <Link href="/notes">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
             <CalendarCheck className="w-12 h-12 mx-auto text-indigo-600 dark:text-indigo-400" />
@@ -47,6 +53,18 @@ const HomePage = () => {
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
               Set and manage your notes easily.
+            </p>
+          </div>
+        </Link>
+
+        <Link href="/ask-ai">
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
+            <MessageSquare className="w-12 h-12 mx-auto text-blue-600 dark:text-blue-400" />
+            <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mt-3">
+              Ask from AI
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
+              Get instant answers from AI.
             </p>
           </div>
         </Link>

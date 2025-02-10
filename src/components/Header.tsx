@@ -2,7 +2,14 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { Moon, Bell, User, FileText, Calendar } from "lucide-react";
+import {
+  Moon,
+  Bell,
+  User,
+  FileText,
+  Calendar,
+  BotMessageSquare,
+} from "lucide-react";
 import Link from "next/link";
 
 const Header = () => {
@@ -14,6 +21,11 @@ const Header = () => {
         return { icon: <FileText className="w-6 h-6" />, text: "Notes" };
       case "/planner/":
         return { icon: <Calendar className="w-6 h-6" />, text: "Planner" };
+      case "/ask-ai/":
+        return {
+          icon: <BotMessageSquare className="w-6 h-6" />,
+          text: "Ask AI",
+        };
       default:
         return { icon: "🚀", text: "Note Sync" };
     }

@@ -29,5 +29,13 @@ body {
 .masonry-column {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Adjusts spacing between items */
+  gap: 16px;  
+}
+
+.recent-chat-content {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;  
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
