@@ -12,6 +12,7 @@ const NotesHeroSection = () => {
   const [importance, setImportance] = useState("Important");
   const [noteColor, setNoteColor] = useState("bg-gray-700");
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [filter, setFilter] = useState("All");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -52,6 +53,11 @@ const NotesHeroSection = () => {
     setNoteColor(noteToEdit.color);
     setEditIndex(index);
   };
+
+  const filteredNotes =
+    filter === "All"
+      ? notes
+      : notes.filter((note: any) => note.importance === filter);
 
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4 bg-gray-900 text-white min-h-screen">
@@ -120,12 +126,24 @@ const NotesHeroSection = () => {
 
       {/* Right Section */}
       <div className="w-full md:w-1/2 p-4 bg-gray-800 rounded-[16px]">
-        <h2 className="text-lg font-bold mb-4">Saved Notes</h2>
-        {notes.length === 0 ? (
-          <p className="text-gray-400">No notes added yet.</p>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-bold">Saved Notes</h2>
+          <select
+            className="p-2 rounded-lg bg-gray-700 text-white focus:outline-none"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          >
+            <option value="All">All</option>
+            <option value="Important">Important</option>
+            <option value="Low Importance">Low Importance</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        {filteredNotes.length === 0 ? (
+          <p className="text-gray-400">No notes found.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {notes.map((note: any, index: number) => (
+            {filteredNotes.map((note: any, index: number) => (
               <div
                 key={index}
                 className={`p-4 rounded-lg relative ${note.color}`}
