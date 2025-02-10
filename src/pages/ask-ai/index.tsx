@@ -13,7 +13,6 @@ export default function ChatUI() {
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const chatEndRef = useRef<HTMLDivElement>(null);
 
   const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
   const API_URL =
@@ -32,7 +31,6 @@ export default function ChatUI() {
     if (typeof window !== "undefined") {
       localStorage.setItem("aj-bot-chats", JSON.stringify(chats));
     }
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
 
   const sendMessage = async () => {
@@ -54,12 +52,11 @@ export default function ChatUI() {
         response?.data?.candidates?.[0]?.content?.parts?.[0]?.text ||
         "Sorry, I couldn't understand that.";
 
-      // Preserve code blocks and formatting
       botReply = botReply
-        .replace(/```([\s\S]*?)```/g, `<pre><code>$1</code></pre>`) // Preserve code blocks
-        .replace(/\n/g, "<br>") // Preserve new lines
-        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>") // Bold text
-        .replace(/\*(.*?)\*/g, "<em>$1</em>"); // Italic text
+        .replace(/```([\s\S]*?)```/g, `<pre><code>$1</code></pre>`)
+        .replace(/\n/g, "<br>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>");
 
       setChats((prev) =>
         prev.map((chat) =>
@@ -91,7 +88,7 @@ export default function ChatUI() {
 
   return (
     <Layout>
-      <div className="flex bg-gradient-to-br to-black text-white">
+      <div className="flex bg-gradient-to-br to-black text-white h-full">
         {/* Sidebar */}
         <Sidebar
           chats={chats}
@@ -102,14 +99,52 @@ export default function ChatUI() {
         />
 
         {/* Chat Section */}
-        <div className="flex-1 flex flex-col items-center justify-center p-6 ml-64">
+        <div className="flex-1 flex flex-col items-center p-6 ml-64 relative">
           {!currentChatId ? (
+            // Initial View: Input inside a card
             <div className="text-center bg-gray-800 p-6 rounded-lg shadow-lg w-1/2">
               <h1 className="text-2xl font-semibold mb-4">
                 How can I help you today?
               </h1>
               <p className="text-gray-400 mb-4">Start a new chat to begin</p>
-              <div className="bg-gray-700 rounded-lg flex items-center px-4 py-2">
+              <div className="flex items-center bg-gray-700 rounded-lg px-4 py-2">
+                <input
+                  type="text"
+                  className="flex-1 bg-transparent outline-none text-white text-lg"
+                  placeholder="Type your prompt here..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                />
+                <button
+                  onClick={sendMessage}
+                  className="p-2 bg-green-600 rounded-lg"
+                >
+                  <Search className="w-5 h-5 text-white" />
+                </button>
+              </div>
+            </div>
+          ) : (
+            // Chat Messages + Fixed Input at Bottom
+            <div className="w-full max-w-2xl flex flex-col flex-grow">
+              {/* Chat Messages */}
+              <div className="flex-grow overflow-y-auto space-y-4 p-6 pb-20">
+                {chats
+                  .filter((chat) => chat.id === currentChatId)
+                  .map((chat, index) => (
+                    <div key={index} className="space-y-2">
+                      <div className="p-3 bg-blue-600 text-right self-end ml-auto rounded-lg max-w-[75%]">
+                        {chat.user}
+                      </div>
+                      <div className="p-3 bg-gray-700 text-left rounded-lg   break-all">
+                        <div dangerouslySetInnerHTML={{ __html: chat.bot }} />
+                      </div>
+                    </div>
+                  ))}
+                {isTyping && <p className="text-gray-500 text-sm">Typing...</p>}
+              </div>
+
+              {/* Fixed Input Box */}
+              <div className="w-full max-w-2xl bg-gray-700 rounded-lg flex items-center px-4 py-2 fixed bottom-2 ">
                 <input
                   type="text"
                   className="flex-1 bg-transparent outline-none text-white text-lg"
@@ -127,23 +162,6 @@ export default function ChatUI() {
                   <Mic className="w-5 h-5 text-white" />
                 </button>
               </div>
-            </div>
-          ) : (
-            <div className="w-full max-w-2xl space-y-4 p-6 overflow-y-auto flex-1">
-              {chats
-                .filter((chat) => chat.id === currentChatId)
-                .map((chat, index) => (
-                  <div key={index} className="space-y-2">
-                    <div className="p-3 bg-blue-600 text-right self-end ml-auto rounded-lg max-w-[75%]">
-                      {chat.user}
-                    </div>
-                    <div className="p-3 bg-gray-700 text-left rounded-lg max-w-[85%]">
-                      <div dangerouslySetInnerHTML={{ __html: chat.bot }} />
-                    </div>
-                  </div>
-                ))}
-              {isTyping && <p className="text-gray-500 text-sm">Typing...</p>}
-              <div ref={chatEndRef}></div>
             </div>
           )}
         </div>
