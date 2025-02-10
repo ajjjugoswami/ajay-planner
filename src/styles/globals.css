@@ -25,3 +25,9 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+.masonry-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Adjusts spacing between items */
+}

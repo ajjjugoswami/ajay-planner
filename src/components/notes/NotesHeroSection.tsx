@@ -61,7 +61,7 @@ const NotesHeroSection = () => {
       : notes.filter((note: any) => note.importance === filter);
 
   const breakpointColumns = {
-    default: 3, // 3 columns for large screens
+    default: 2, // 3 columns for large screens
     1024: 2, // 2 columns for medium screens
     640: 1, // 1 column for small screens
   };
