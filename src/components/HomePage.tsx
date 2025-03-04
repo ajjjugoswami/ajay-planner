@@ -99,7 +99,7 @@ const HomePage = () => {
             className="mt-16 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center text-center xl:w-[450px]  lg:w-[300px] md:w-[300px] sm:w-[100%] h-[100%]"
           >
             <img
-              src="/assets/images/ajay2.jpg"
+              src="/assets/images/ajay2.JPG"
               alt="Developer"
               className="w-[150px] h-[150px] rounded-[22px] border-2 border-blue-500 object-cover"
             />
