@@ -7,6 +7,7 @@ import {
   Sparkles,
   MessageSquare,
   QrCode,
+  FileText,
 } from "lucide-react";
 
 const HomePage = () => {
@@ -21,7 +22,7 @@ const HomePage = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="mb-8 flex items-center gap-3 text-3xl font-bold    text-[#FFFFFF]"
+        className="mb-8 flex items-center gap-3 text-3xl font-bold text-[#FFFFFF]"
       >
         <motion.div
           initial={{ rotate: 0 }}
@@ -78,6 +79,18 @@ const HomePage = () => {
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
               Generate custom QR codes easily.
+            </p>
+          </div>
+        </Link>
+
+        <Link href="/resume-builder">
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
+            <FileText className="w-12 h-12 mx-auto text-teal-600 dark:text-teal-400" />
+            <h2 className="text-2xl font-semibold text-teal-600 dark:text-teal-400 mt-3">
+              Resume Builder
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
+              Create professional resumes effortlessly.
             </p>
           </div>
         </Link>
