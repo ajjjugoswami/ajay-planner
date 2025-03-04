@@ -9,6 +9,9 @@ export const initialResumeData: ResumeData = {
     phone: "+91 9876543210",
     location: "Bengaluru",
     website: "https://e-resume.vercel.app",
+    linkedin: "",
+    github: "",
+    twitter: ""
   },
   summary:
     "I am a web developer having expertise in frontend development and exposure to back-end development. I design and develop web applications using the latest technologies to deliver the product with quality code.",
@@ -36,19 +39,7 @@ export const initialResumeData: ResumeData = {
         "Keep the Project Manager and the IT Leads updated on the overall progress of the projects and manage the tasks distributed to the team",
         "Keep the code and the features implemented by the other developers in accordance to the requirements",
       ],
-    },
-    {
-      company: "Company 3",
-      title: "Trainee Developer",
-      period: "Aug 2011 - May 2015",
-      responsibilities: [
-        "Design easy user interfaces and great user experiences for the digital platforms of small companies",
-        "Wordpress development, including themes creation or customization, custom plugins development and training",
-        "E-commerce maintenance with Fastcommerce, a Brazilian e-commerce platform",
-        "E-commerce development with Magento, customizing preexisting themes",
-        "Integrate external services such as payment services, delivery, etc into Magento solutions",
-      ],
-    },
+    } 
   ],
   education: [
     {

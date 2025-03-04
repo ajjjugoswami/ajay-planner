@@ -15,10 +15,10 @@ import {
   PlusOutlined,
   DeleteOutlined,
   UserOutlined,
-   TrophyOutlined,
+  TrophyOutlined,
 } from "@ant-design/icons";
 import { ResumeData } from "../lib/ResumeTypes";
- 
+
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
@@ -273,6 +273,36 @@ export function ResumeForm({ resumeData, updateResume }: ResumeFormProps) {
                   handlePersonalInfoChange("website", e.target.value)
                 }
                 placeholder="https://example.com"
+              />
+            </Form.Item>
+
+            <Form.Item label="GitHub">
+              <Input
+                value={resumeData.personalInfo.github}
+                onChange={(e) =>
+                  handlePersonalInfoChange("github", e.target.value)
+                }
+                placeholder="https://github.com/yourprofile"
+              />
+            </Form.Item>
+
+            <Form.Item label="Twitter">
+              <Input
+                value={resumeData.personalInfo.twitter}
+                onChange={(e) =>
+                  handlePersonalInfoChange("twitter", e.target.value)
+                }
+                placeholder="https://twitter.com/yourhandle"
+              />
+            </Form.Item>
+
+            <Form.Item label="LinkedIn">
+              <Input
+                value={resumeData.personalInfo.linkedin}
+                onChange={(e) =>
+                  handlePersonalInfoChange("linkedin", e.target.value)
+                }
+                placeholder="https://linkedin.com/in/yourprofile"
               />
             </Form.Item>
 
@@ -565,84 +595,6 @@ export function ResumeForm({ resumeData, updateResume }: ResumeFormProps) {
           </Button>
 
           <Divider />
-
-          <Title level={5}>Volunteering</Title>
-          <Collapse accordion>
-            {resumeData.volunteering.map((vol, index) => (
-              <Panel
-                header={`${vol.organization} - ${vol.role}`}
-                key={`vol-${index}`}
-              >
-                <Form layout="vertical">
-                  <Form.Item label="Organization">
-                    <Input
-                      value={vol.organization}
-                      onChange={(e) =>
-                        handleVolunteeringChange(
-                          index,
-                          "organization",
-                          e.target.value
-                        )
-                      }
-                    />
-                  </Form.Item>
-
-                  <Form.Item label="Role">
-                    <Input
-                      value={vol.role}
-                      onChange={(e) =>
-                        handleVolunteeringChange(index, "role", e.target.value)
-                      }
-                    />
-                  </Form.Item>
-
-                  <Form.Item label="Period">
-                    <Input
-                      value={vol.period}
-                      onChange={(e) =>
-                        handleVolunteeringChange(
-                          index,
-                          "period",
-                          e.target.value
-                        )
-                      }
-                    />
-                  </Form.Item>
-
-                  <Form.Item label="Description (optional)">
-                    <TextArea
-                      rows={2}
-                      value={vol.description}
-                      onChange={(e) =>
-                        handleVolunteeringChange(
-                          index,
-                          "description",
-                          e.target.value
-                        )
-                      }
-                    />
-                  </Form.Item>
-
-                  <Button
-                    danger
-                    onClick={() => removeVolunteering(index)}
-                    style={{ marginTop: 16 }}
-                  >
-                    Remove Volunteering
-                  </Button>
-                </Form>
-              </Panel>
-            ))}
-          </Collapse>
-
-          <Button
-            type="dashed"
-            onClick={addVolunteering}
-            style={{ width: "100%", marginTop: 16 }}
-            icon={<PlusOutlined />}
-          >
-            Add Volunteering
-          </Button>
         </TabPane>
       </Tabs>
     </div>

@@ -20,6 +20,21 @@ const PageContainer = styled(Layout)`
   flex-direction: column;
 `;
 
+ const GlobalStyles = styled.div`
+ *::-webkit-scrollbar-track {
+  background: #00003e;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-button,
+*::-webkit-scrollbar-thumb {
+  background-color: #5732c6;
+}
+`;
+
 const Header = styled.div`
   background: #fff;
   padding: 12px 24px;
@@ -44,17 +59,6 @@ const ScrollableContainer = styled.div`
   background: #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 16px;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #f0f0f0;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 3px;
-  }
 `;
 
 const Sidebar = styled(ScrollableContainer)`
@@ -98,34 +102,36 @@ export default function ResumePage() {
   };
 
   return (
-    <PageContainer>
-      <Header>
-        <Title level={3} style={{ margin: 0 }}>
-          Resume Builder
-        </Title>
-        <Space>
-          <Button
-            type="primary"
-            icon={<DownloadOutlined />}
-            onClick={handleExportPDF}
-          >
-            Export PDF
-          </Button>
-        </Space>
-      </Header>
-      <ContentWrapper>
-        <ScrollableContainer>
-          <div id="resume-preview">
-            <ResumePreview data={resumeData} />
-          </div>
-        </ScrollableContainer>
-        <Sidebar>
-          <ResumeForm
-            resumeData={resumeData}
-            updateResume={handleUpdateResume}
-          />
-        </Sidebar>
-      </ContentWrapper>
-    </PageContainer>
+    <GlobalStyles>
+      <PageContainer>
+        <Header>
+          <Title level={3} style={{ margin: 0 }}>
+            Resume Builder
+          </Title>
+          <Space>
+            <Button
+              type="primary"
+              icon={<DownloadOutlined />}
+              onClick={handleExportPDF}
+            >
+              Export PDF
+            </Button>
+          </Space>
+        </Header>
+        <ContentWrapper>
+          <ScrollableContainer>
+            <div id="resume-preview">
+              <ResumePreview data={resumeData} />
+            </div>
+          </ScrollableContainer>
+          <Sidebar>
+            <ResumeForm
+              resumeData={resumeData}
+              updateResume={handleUpdateResume}
+            />
+          </Sidebar>
+        </ContentWrapper>
+      </PageContainer>
+    </GlobalStyles>
   );
 }
