@@ -169,41 +169,11 @@ export function ResumeForm({ resumeData, updateResume }: ResumeFormProps) {
     updateResume({ awards: updatedAwards });
   };
 
-  const handleVolunteeringChange = (
-    index: number,
-    field: string,
-    value: string
-  ) => {
-    const updatedVolunteering = [...resumeData.volunteering];
-    updatedVolunteering[index] = {
-      ...updatedVolunteering[index],
-      [field]: value,
-    };
-    updateResume({ volunteering: updatedVolunteering });
-  };
-
-  const addVolunteering = () => {
-    updateResume({
-      volunteering: [
-        ...resumeData.volunteering,
-        {
-          organization: "Organization Name",
-          role: "Your Role",
-          period: "Start - End",
-          description: "",
-        },
-      ],
-    });
-  };
-
-  const removeVolunteering = (index: number) => {
-    const updatedVolunteering = [...resumeData.volunteering];
-    updatedVolunteering.splice(index, 1);
-    updateResume({ volunteering: updatedVolunteering });
-  };
+ 
+  
 
   return (
-    <div>
+    <div  >
       <Tabs activeKey={activeTab} onChange={setActiveTab}>
         <TabPane
           tab={

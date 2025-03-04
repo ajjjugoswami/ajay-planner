@@ -21,6 +21,11 @@ const Header = () => {
         return { icon: <FileText className="w-6 h-6" />, text: "Notes" };
       case "/planner/":
         return { icon: <Calendar className="w-6 h-6" />, text: "Planner" };
+      case "/resume-builder/":
+        return {
+          icon: <FileText className="w-6 h-6" />,
+          text: "Resume Builder",
+        };
       case "/ask-ai/":
         return {
           icon: <BotMessageSquare className="w-6 h-6" />,

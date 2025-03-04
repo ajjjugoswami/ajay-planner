@@ -40,7 +40,7 @@ const Header = styled.div`
   padding: 12px 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 `;
 
@@ -116,15 +116,13 @@ export default function ResumePage() {
     <GlobalStyles>
       <PageContainer>
         <Header>
-          <Title level={3} style={{ margin: 0 }}>
-            Resume Builder
-          </Title>
+         
           <Space>
             <Button
               type="primary"
               icon={<DownloadOutlined />}
               onClick={handleExportPDF}
-            >
+             >
               Export PDF
             </Button>
           </Space>
