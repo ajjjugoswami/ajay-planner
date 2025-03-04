@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Button, Typography, Space } from "antd";
 import { DownloadOutlined } from "@ant-design/icons";
@@ -20,19 +20,19 @@ const PageContainer = styled(Layout)`
   flex-direction: column;
 `;
 
- const GlobalStyles = styled.div`
- *::-webkit-scrollbar-track {
-  background: #00003e;
-}
+const GlobalStyles = styled.div`
+  *::-webkit-scrollbar-track {
+    background: #00003e;
+  }
 
-*::-webkit-scrollbar {
-  width: 6px;
-}
+  *::-webkit-scrollbar {
+    width: 6px;
+  }
 
-*::-webkit-scrollbar-button,
-*::-webkit-scrollbar-thumb {
-  background-color: #5732c6;
-}
+  *::-webkit-scrollbar-button,
+  *::-webkit-scrollbar-thumb {
+    background-color: #5732c6;
+  }
 `;
 
 const Header = styled.div`
@@ -67,7 +67,18 @@ const Sidebar = styled(ScrollableContainer)`
 `;
 
 export default function ResumePage() {
-  const [resumeData, setResumeData] = useState<ResumeData>(initialResumeData);
+  const [resumeData, setResumeData] = useState<ResumeData>(() => {
+    if (typeof window !== "undefined") {
+      const storedData = localStorage.getItem("resumeData");
+      return storedData ? JSON.parse(storedData) : initialResumeData;
+    }
+    return initialResumeData;
+  });
+
+  // Save data to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("resumeData", JSON.stringify(resumeData));
+  }, [resumeData]);
 
   const handleUpdateResume = (newData: Partial<ResumeData>) => {
     setResumeData((prev) => ({ ...prev, ...newData }));

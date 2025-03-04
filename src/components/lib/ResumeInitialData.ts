@@ -13,10 +13,8 @@ export const initialResumeData: ResumeData = {
     github: "",
     twitter: ""
   },
-  summary:
-    "I am a web developer having expertise in frontend development and exposure to back-end development. I design and develop web applications using the latest technologies to deliver the product with quality code.",
-  objective:
-    "Eager to expand my skill set through external trainings to help boost all major front desk KPIs. Hoping to leverage organizational skills to help ABC Corp introduce time-saving schemes for all executives.",
+  summary: "I am a web developer having expertise in frontend development and exposure to back-end development. I design and develop web applications using the latest technologies to deliver the product with quality code.",
+  objective: "Eager to expand my skill set through external trainings to help boost all major front desk KPIs. Hoping to leverage organizational skills to help ABC Corp introduce time-saving schemes for all executives.",
   experience: [
     {
       company: "Company 1",
@@ -39,7 +37,7 @@ export const initialResumeData: ResumeData = {
         "Keep the Project Manager and the IT Leads updated on the overall progress of the projects and manage the tasks distributed to the team",
         "Keep the code and the features implemented by the other developers in accordance to the requirements",
       ],
-    } 
+    }
   ],
   education: [
     {
@@ -86,13 +84,5 @@ export const initialResumeData: ResumeData = {
       description: "Awarded for exceptional improvements made to improve user experience",
     },
   ],
-  volunteering: [
-    {
-      organization: "Company XYZ",
-      role: "Organizer",
-      period: "Jan 2012 - Jan 2013",
-      description: "Organized several hackthons & monthly meetup to improve the community",
-    },
-  ],
-}
+ }
 

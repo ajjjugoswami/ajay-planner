@@ -30,12 +30,7 @@ export interface PersonalInfo {
     description: string
   }
   
-  export interface Volunteering {
-    organization: string
-    role: string
-    period: string
-    description: string
-  }
+  
   
   export interface ResumeData {
     personalInfo: PersonalInfo
@@ -45,7 +40,6 @@ export interface PersonalInfo {
     education: Education[]
     skills: string[]
     awards: Award[]
-    volunteering: Volunteering[]
-  }
+   }
   
   
