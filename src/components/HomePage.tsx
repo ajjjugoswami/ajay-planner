@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable @next/next/no-img-element */
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -8,92 +9,123 @@ import {
   MessageSquare,
   QrCode,
   FileText,
+  Github,
+  Linkedin,
+  Twitter,
+  Instagram,
 } from "lucide-react";
 
+const sections = [
+  {
+    href: "/planner",
+    icon: NotebookPen,
+    title: "Planner",
+    description: "Plan your tasks and stay organized.",
+    color: "text-purple-600 dark:text-purple-400",
+  },
+  {
+    href: "/notes",
+    icon: CalendarCheck,
+    title: "Notes",
+    description: "Set and manage your notes easily.",
+    color: "text-indigo-600 dark:text-indigo-400",
+  },
+  {
+    href: "/ask-ai",
+    icon: MessageSquare,
+    title: "Ask from AI",
+    description: "Get instant answers from AI.",
+    color: "text-blue-600 dark:text-blue-400",
+  },
+
+  {
+    href: "/resume-builder",
+    icon: FileText,
+    title: "Resume Builder",
+    description: "Create  resumes effortlessly.",
+    color: "text-teal-600 dark:text-teal-400",
+  },
+  {
+    href: "/qr-generator",
+    icon: QrCode,
+    title: "QR Generator",
+    description: "Generate custom QR codes easily.",
+    color: "text-green-600 dark:text-green-400",
+  },
+];
+
 const HomePage = () => {
-  const [helloMessage, setHelloMessage] = useState(
-    "Hello! Welcome to Your Dashboard"
-  );
-
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      {/* Animated Hello Message */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="mb-8 flex items-center gap-3 text-3xl font-bold text-[#FFFFFF]"
-      >
-        <motion.div
-          initial={{ rotate: 0 }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-        >
-          <Sparkles className="w-8 h-8 text-yellow-500 dark:text-yellow-300" />
-        </motion.div>
-        {helloMessage}
-      </motion.div>
+    <div className=" container p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="flex justify-between items-start">
+        <div className=" ">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="mb-8 flex items-center gap-3 xl:text-3xl font-bold  text-[#FFFFFF]"
+          >
+            <motion.div
+              initial={{ rotate: 0 }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            >
+              <Sparkles className="w-8 h-8 text-yellow-500 dark:text-yellow-300" />
+            </motion.div>
+            Hello! Welcome to Your Dashboard
+          </motion.div>
+          <div className="grid xl:grid-cols-2 md:grid-cols-1 lg:grid-cols-1 gap-8">
+            {sections.map(({ href, icon: Icon, title, description, color }) => (
+              <Link key={href} href={href}>
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center min-w-[380px]">
+                  <Icon className={`w-12 h-12 mx-auto ${color}`} />
+                  <h2 className={`text-2xl font-semibold ${color} mt-3`}>
+                    {title}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300 mt-3 text-[18px]">
+                    {description}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>{" "}
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <Link href="/planner">
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
-            <NotebookPen className="w-12 h-12 mx-auto text-purple-600 dark:text-purple-400" />
-            <h2 className="text-2xl font-semibold text-purple-600 dark:text-purple-400 mt-3">
-              Planner
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
-              Plan your tasks and stay organized.
-            </p>
-          </div>
-        </Link>
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="mt-16 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center text-center w-[350px] sm:w-[400px] h-[100%]"
+          >
+            <img
+              src="/assets/images/ajay2.jpg"
+              alt="Developer"
+              className="w-[150px] h-[150px] rounded-[22px] border-2 border-blue-500 object-cover"
+            />
 
-        <Link href="/notes">
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
-            <CalendarCheck className="w-12 h-12 mx-auto text-indigo-600 dark:text-indigo-400" />
-            <h2 className="text-2xl font-semibold text-indigo-600 dark:text-indigo-400 mt-3">
-              Notes
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
-              Set and manage your notes easily.
+            <h3 className="text-2xl font-semibold mt-4 text-[#FFFFFF] dark:text-white">
+              Ajay Goswami
+            </h3>
+            <p className="text-gray-600 dark:text-gray-300 text-lg mt-2">
+              Frontend Developer | Next.js Enthusiast
             </p>
-          </div>
-        </Link>
-
-        <Link href="/ask-ai">
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
-            <MessageSquare className="w-12 h-12 mx-auto text-blue-600 dark:text-blue-400" />
-            <h2 className="text-2xl font-semibold text-blue-600 dark:text-blue-400 mt-3">
-              Ask from AI
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
-              Get instant answers from AI.
-            </p>
-          </div>
-        </Link>
-
-        <Link href="/qr-generator">
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
-            <QrCode className="w-12 h-12 mx-auto text-green-600 dark:text-green-400" />
-            <h2 className="text-2xl font-semibold text-green-600 dark:text-green-400 mt-3">
-              QR Generator
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
-              Generate custom QR codes easily.
-            </p>
-          </div>
-        </Link>
-
-        <Link href="/resume-builder">
-          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
-            <FileText className="w-12 h-12 mx-auto text-teal-600 dark:text-teal-400" />
-            <h2 className="text-2xl font-semibold text-teal-600 dark:text-teal-400 mt-3">
-              Resume Builder
-            </h2>
-            <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
-              Create professional resumes effortlessly.
-            </p>
-          </div>
-        </Link>
+            <div className="flex gap-4 mt-4">
+              <Link href="https://github.com/goswamiajay526" target="_blank">
+                <Github className="w-6 h-6 text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white transition" />
+              </Link>
+              <Link
+                href="https://www.linkedin.com/in/ajay-goswami-7200bb242/"
+                target="_blank"
+              >
+                <Linkedin className="w-6 h-6 text-blue-600 hover:text-blue-800 transition" />
+              </Link>
+              <Link href="https://www.instagram.com/" target="_blank">
+                <Instagram className="w-6 h-6 text-blue-400 hover:text-blue-600 transition" />
+              </Link>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
