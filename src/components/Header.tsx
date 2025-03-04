@@ -34,7 +34,7 @@ const Header = () => {
   const { icon, text } = getHeaderContent();
 
   return (
-    <header className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 to-purple-700 text-white p-4 shadow-lg flex justify-between items-center rounded-b-2xl">
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 to-purple-700 text-white p-4 shadow-lg flex justify-between items-center  ">
       <Link
         href="/"
         className="text-2xl font-bold tracking-wide flex items-center gap-2 drop-shadow-lg"

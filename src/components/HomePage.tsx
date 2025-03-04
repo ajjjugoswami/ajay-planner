@@ -6,6 +6,7 @@ import {
   CalendarCheck,
   Sparkles,
   MessageSquare,
+  QrCode,
 } from "lucide-react";
 
 const HomePage = () => {
@@ -20,7 +21,7 @@ const HomePage = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
-        className="mb-8 flex items-center gap-3 text-3xl font-bold text-gray-800 dark:text-gray-200"
+        className="mb-8 flex items-center gap-3 text-3xl font-bold    text-[#FFFFFF]"
       >
         <motion.div
           initial={{ rotate: 0 }}
@@ -65,6 +66,18 @@ const HomePage = () => {
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
               Get instant answers from AI.
+            </p>
+          </div>
+        </Link>
+
+        <Link href="/qr-generator">
+          <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center w-80 md:w-96">
+            <QrCode className="w-12 h-12 mx-auto text-green-600 dark:text-green-400" />
+            <h2 className="text-2xl font-semibold text-green-600 dark:text-green-400 mt-3">
+              QR Generator
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mt-3 text-lg">
+              Generate custom QR codes easily.
             </p>
           </div>
         </Link>
