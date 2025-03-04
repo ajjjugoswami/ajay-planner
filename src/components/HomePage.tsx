@@ -57,13 +57,13 @@ const sections = [
 const HomePage = () => {
   return (
     <div className=" container p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="flex justify-between items-start">
+      <div className="flex  justify-between items-start gap-7 xl:flex-row lg:flex-row md:flex-row sm:flex-col  xs:flex-col">
         <div className=" ">
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
-            className="mb-8 flex items-center gap-3 xl:text-3xl font-bold  text-[#FFFFFF]"
+            className="mb-8 flex items-center gap-3 xl:text-3xl  font-bold  text-[#FFFFFF]"
           >
             <motion.div
               initial={{ rotate: 0 }}
@@ -74,10 +74,10 @@ const HomePage = () => {
             </motion.div>
             Hello! Welcome to Your Dashboard
           </motion.div>
-          <div className="grid xl:grid-cols-2 md:grid-cols-1 lg:grid-cols-1 gap-8">
+          <div className="grid xl:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-8">
             {sections.map(({ href, icon: Icon, title, description, color }) => (
               <Link key={href} href={href}>
-                <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center min-w-[380px]">
+                <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl hover:shadow-2xl transition cursor-pointer text-center xl:min-w-[380px]  lg:min-w-[250px]">
                   <Icon className={`w-12 h-12 mx-auto ${color}`} />
                   <h2 className={`text-2xl font-semibold ${color} mt-3`}>
                     {title}
@@ -96,7 +96,7 @@ const HomePage = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="mt-16 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center text-center w-[350px] sm:w-[400px] h-[100%]"
+            className="mt-16 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg flex flex-col items-center text-center xl:w-[450px]  lg:w-[300px] md:w-[300px] sm:w-[100%] h-[100%]"
           >
             <img
               src="/assets/images/ajay2.jpg"
