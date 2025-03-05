@@ -50,6 +50,10 @@ const ContentWrapper = styled.div`
   gap: 50px;
   background: #f5f5f5;
   padding: 24px;
+
+  @media(max-width:640px){
+  flex-wrap:wrap;
+  }
 `;
 
 const ScrollableContainer = styled.div`
@@ -64,6 +68,10 @@ const ScrollableContainer = styled.div`
 const Sidebar = styled(ScrollableContainer)`
   min-width: 450px;
   box-shadow: -1px 0 3px rgba(0, 0, 0, 0.1);
+
+  @media(max-width:640px){
+  min-width:100%;
+  }
 `;
 
 export default function ResumePage() {
