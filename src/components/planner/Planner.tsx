@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trash, ArrowLeft, ArrowRight } from "lucide-react";
+import { DatePicker, TimePicker, Button, notification } from "antd";
+import moment from "moment";
 
 const PlannerPage = () => {
   const [tasks, setTasks] = useState<any>({
@@ -13,7 +15,15 @@ const PlannerPage = () => {
     title: "",
     description: "",
     priority: "low",
+    dueDate: null,  
+    dueTime: null, 
   });
+
+   useEffect(() => {
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+  }, []);
 
   useEffect(() => {
     const savedTasks = localStorage.getItem("planer");
@@ -48,12 +58,35 @@ const PlannerPage = () => {
 
   const addTask = () => {
     if (newTask.title.trim() === "") return;
+
+    // Schedule notification if due date and time are set
+    if (newTask.dueDate && newTask.dueTime) {
+      const dueDateTime = moment(newTask.dueDate)
+        .set("hour", newTask.dueTime.hour())
+        .set("minute", newTask.dueTime.minute())
+        .toDate();
+
+      const currentTime = new Date().getTime();
+      const timeUntilDue = dueDateTime.getTime() - currentTime;
+
+      // Set up notification if time until due is positive
+      if (timeUntilDue > 0) {
+        setTimeout(() => {
+          if (Notification.permission === "granted") {
+            new Notification("Task Reminder", {
+              body: `Your task "${newTask.title}" is due!`,
+            });
+          }
+        }, timeUntilDue);
+      }
+    }
+
     setTasks((prev: any) => {
       const updatedTasks = { ...prev, todo: [...prev.todo, newTask] };
       localStorage.setItem("planer", JSON.stringify(updatedTasks));
       return updatedTasks;
     });
-    setNewTask({ title: "", description: "", priority: "low" });
+    setNewTask({ title: "", description: "", priority: "low", dueDate: null, dueTime: null });
   };
 
   const moveTask = (task: any, from: any, to: any) => {
@@ -81,12 +114,8 @@ const PlannerPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 flex flex-col items-center">
-      {/* <h1 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-6 text-center">
-        📝 Planner
-      </h1> */}
-
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-5xl">
-        <h2 className="text-2xl font-semibold text-gray-800 dark:text-white text-center mb-4">
+        <h2 className="text-2xl font-semibold   text-white text-center mb-4">
           ✏️ Add a New Task
         </h2>
 
@@ -132,16 +161,35 @@ const PlannerPage = () => {
             <option value="important">🚀 High Priority</option>
           </select>
 
-          <button
-            className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 py-3 rounded-lg font-semibold hover:scale-105 transition-transform"
+          {/* Add Date and Time Picker */}
+          <DatePicker
+            className="p-3 w-full rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+            value={newTask.dueDate}
+            onChange={(date) => setNewTask({ ...newTask, dueDate: date })}
+            format="YYYY-MM-DD"
+            placeholder="Select Due Date"
+          />
+
+          <TimePicker
+            className="p-3 w-full rounded-lg border  border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 outline-none"
+            value={newTask.dueTime}
+            onChange={(time) => setNewTask({ ...newTask, dueTime: time })}
+            format="HH:mm"
+            placeholder="Select Due Time"
+          />
+
+          <Button
+            type="primary"
+            className="w-full mt-4 "
             onClick={addTask}
           >
             ➕ Add Task
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6   mt-6 w-full">
+      {/* Render Tasks */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 w-full">
         {Object.entries(tasks).map(([status, taskList]: any) => (
           <div
             key={status}
@@ -183,12 +231,18 @@ const PlannerPage = () => {
                       >
                         {task.priority}
                       </span>
-                      <span className="text-white text-[20px] dark:text-gray-300 mt-2 font-bold block">
+                      <span className="text-[#000000] text-[20px]   mt-2 font-bold block">
                         {task.title}
                       </span>
                       <p className="text-[16px] text-gray-600 dark:text-gray-400">
                         {task.description}
                       </p>
+                      {task.dueDate && task.dueTime && (
+                        <p className="text-sm text-gray-500">
+                          Due: {moment(task.dueDate).format("YYYY-MM-DD")}{" "}
+                          {moment(task.dueTime).format("HH:mm")}
+                        </p>
+                      )}
                     </div>
                     <div className="mt-2 sm:mt-0 flex space-x-2">
                       {status !== "todo" && (
