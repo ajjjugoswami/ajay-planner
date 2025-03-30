@@ -17,6 +17,7 @@ import {
   notification,
   Progress,
   Tooltip,
+  Switch,
 } from "antd";
 import {
   Upload,
@@ -27,8 +28,10 @@ import {
   Image as ImageIcon,
   ChevronsDown,
   Info,
+  Moon,
+  Sun,
 } from "lucide-react";
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { Layout } from "@/components/Layout";
 
@@ -48,13 +51,46 @@ const float = keyframes`
   100% { transform: translateY(0px); }
 `;
 
+// Theme variables
+const lightTheme = {
+  background: "linear-gradient(135deg, #f6f7f9 0%, #e9ebee 100%)",
+  panelBg: "#ffffff",
+  textPrimary: "#1a1a1a",
+  textSecondary: "#64748b",
+  border: "#d1d5db",
+  accent: "#4f46e5",
+  hoverBg: "rgba(79, 70, 229, 0.05)",
+  shadow: "0 4px 12px rgba(0, 0, 0, 0.08)",
+  cardBg: "#ffffff",
+  cardBorder: "#e2e8f0",
+  qualityControlBg: "#f8fafc",
+};
+
+const darkTheme = {
+  background: "linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%)",
+  panelBg: "#1e1e1e",
+  textPrimary: "#e5e5e5",
+  textSecondary: "#a1a1aa",
+  border: "#444",
+  accent: "#6366f1",
+  hoverBg: "rgba(99, 102, 241, 0.1)",
+  shadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
+  cardBg: "#1e1e1e",
+  cardBorder: "#333",
+  qualityControlBg: "#2a2a2a",
+};
+
 // Styled Components
-const Container = styled.div`
+const Container = styled.div<{ $isDark: boolean }>`
   max-width: 100%;
   margin: 0 auto;
   padding: 0;
-  background: linear-gradient(135deg, #f6f7f9 0%, #e9ebee 100%);
+  background: ${({ $isDark }) =>
+    $isDark ? darkTheme.background : lightTheme.background};
   min-height: 100vh;
+  color: ${({ $isDark }) =>
+    $isDark ? darkTheme.textPrimary : lightTheme.textPrimary};
+  transition: all 0.3s ease;
 `;
 
 const MainContent = styled.div`
@@ -71,14 +107,19 @@ const MainContent = styled.div`
   }
 `;
 
-const LeftPanel = styled(motion.div)`
-  background: white;
+const LeftPanel = styled(motion.div)<{ $isDark: boolean }>`
+  background: ${({ $isDark }) =>
+    $isDark ? darkTheme.panelBg : lightTheme.panelBg};
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: ${({ $isDark }) =>
+    $isDark ? darkTheme.shadow : lightTheme.shadow};
   height: fit-content;
   position: sticky;
   top: 24px;
+  border: 1px solid
+    ${({ $isDark }) => ($isDark ? darkTheme.border : lightTheme.border)};
+  transition: all 0.3s ease;
 
   @media (max-width: 768px) {
     position: static;
@@ -90,15 +131,21 @@ const RightPanel = styled(motion.div)`
   background: transparent;
 `;
 
-const DropZone = styled(motion.div)<{ isdragging: string }>`
+const DropZone = styled(motion.div)<{ isdragging: string; $isDark: boolean }>`
   width: 100%;
   padding: 40px 20px;
   text-align: center;
   cursor: pointer;
   background: ${(props) =>
-    props.isdragging === "true" ? "rgba(79, 70, 229, 0.1)" : "transparent"};
+    props.isdragging === "true"
+      ? props.$isDark
+        ? "rgba(99, 102, 241, 0.2)"
+        : "rgba(79, 70, 229, 0.1)"
+      : "transparent"};
   border: ${(props) =>
-    props.isdragging === "true" ? "3px dashed #4f46e5" : "3px dashed #d1d5db"};
+    props.isdragging === "true"
+      ? "3px dashed ${props.$isDark ? darkTheme.accent : lightTheme.accent}"
+      : `3px dashed ${props.$isDark ? darkTheme.border : lightTheme.border}`};
   transition: all 0.3s ease;
   border-radius: 12px;
   margin-bottom: 24px;
@@ -106,24 +153,27 @@ const DropZone = styled(motion.div)<{ isdragging: string }>`
   flex-direction: column;
   align-items: center;
   &:hover {
-    background: rgba(79, 70, 229, 0.05);
-    border-color: #4f46e5;
+    background: ${({ $isDark }) =>
+      $isDark ? darkTheme.hoverBg : lightTheme.hoverBg};
+    border-color: ${({ $isDark }) =>
+      $isDark ? darkTheme.accent : lightTheme.accent};
   }
 `;
 
-const UploadIconWrapper = styled(motion.div)`
+const UploadIconWrapper = styled(motion.div)<{ $isDark: boolean }>`
   font-size: 48px;
-  color: #4f46e5;
+  color: ${({ $isDark }) => ($isDark ? darkTheme.accent : lightTheme.accent)};
   margin-bottom: 16px;
   animation: ${float} 3s ease-in-out infinite;
 `;
 
-const HintText = styled(motion.div)`
+const HintText = styled(motion.div)<{ $isDark: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #64748b;
+  color: ${({ $isDark }) =>
+    $isDark ? darkTheme.textSecondary : lightTheme.textSecondary};
   margin-top: 16px;
   font-size: 14px;
 `;
@@ -143,28 +193,32 @@ const ImageGrid = styled(motion.div)`
   }
 `;
 
-const ImageCard = styled(motion.div)`
-  border: 1px solid #e2e8f0;
+const ImageCard = styled(motion.div)<{ $isDark: boolean }>`
+  border: 1px solid
+    ${({ $isDark }) => ($isDark ? darkTheme.cardBorder : lightTheme.cardBorder)};
   border-radius: 12px;
   padding: 16px;
-  background: white;
+  background: ${({ $isDark }) =>
+    $isDark ? darkTheme.cardBg : lightTheme.cardBg};
   position: relative;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ $isDark }) =>
+    $isDark ? darkTheme.shadow : lightTheme.shadow};
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+    border-color: ${({ $isDark }) => ($isDark ? "#444" : "#d1d5db")};
   }
 `;
 
-const ImagePreview = styled(motion.img)`
+const ImagePreview = styled(motion.img)<{ $isDark: boolean }>`
   width: 100%;
   height: 160px;
   object-fit: contain;
   border-radius: 8px;
   margin-bottom: 12px;
-  background: #f8fafc;
+  background: ${({ $isDark }) => ($isDark ? "#2a2a2a" : "#f8fafc")};
 `;
 
 const ImageInfo = styled.div`
@@ -174,19 +228,21 @@ const ImageInfo = styled.div`
   margin-bottom: 12px;
 `;
 
-const ImageName = styled(Text)`
+const ImageName = styled(Text)<{ $isDark: boolean }>`
   display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 14px;
-  color: #334155;
+  color: ${({ $isDark }) =>
+    $isDark ? darkTheme.textPrimary : lightTheme.textPrimary};
   font-weight: 500;
 `;
 
-const ImageSize = styled(Text)`
+const ImageSize = styled(Text)<{ $isDark: boolean }>`
   font-size: 12px;
-  color: #64748b;
+  color: ${({ $isDark }) =>
+    $isDark ? darkTheme.textSecondary : lightTheme.textSecondary};
   display: flex;
   align-items: center;
   gap: 4px;
@@ -207,17 +263,20 @@ const ConvertedBadge = styled(motion.span)`
   font-size: 12px;
   padding: 4px 8px;
   border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 `;
 
-const QualityControl = styled.div`
+const QualityControl = styled.div<{ $isDark: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin: 24px 0;
   padding: 20px;
-  background-color: #f8fafc;
+  background-color: ${({ $isDark }) =>
+    $isDark ? darkTheme.qualityControlBg : lightTheme.qualityControlBg};
   border-radius: 12px;
+  border: 1px solid
+    ${({ $isDark }) => ($isDark ? darkTheme.border : lightTheme.border)};
 `;
 
 const ActionButtons = styled.div`
@@ -230,10 +289,10 @@ const ActionButtons = styled.div`
   }
 `;
 
-const ConvertButton = styled(Button)`
+const ConvertButton = styled(Button)<{ $isDark: boolean }>`
   && {
-    background-color: #4f46e5;
-    border-color: #4f46e5;
+    background-color: ${({ $isDark }) => ($isDark ? "#6366f1" : "#4f46e5")};
+    border-color: ${({ $isDark }) => ($isDark ? "#6366f1" : "#4f46e5")};
     color: white;
     font-weight: 500;
     height: 48px;
@@ -241,18 +300,19 @@ const ConvertButton = styled(Button)`
     flex: 1;
 
     &:hover {
-      background-color: #4338ca;
-      border-color: #4338ca;
+      background-color: ${({ $isDark }) => ($isDark ? "#4f46e5" : "#4338ca")};
+      border-color: ${({ $isDark }) => ($isDark ? "#4f46e5" : "#4338ca")};
     }
 
     &:disabled {
-      background-color: #c7d2fe;
-      border-color: #c7d2fe;
+      background-color: ${({ $isDark }) => ($isDark ? "#3f3f46" : "#c7d2fe")};
+      border-color: ${({ $isDark }) => ($isDark ? "#3f3f46" : "#c7d2fe")};
+      color: ${({ $isDark }) => ($isDark ? "#71717a" : "white")};
     }
   }
 `;
 
-const DownloadButton = styled(Button)`
+const DownloadButton = styled(Button)<{ $isDark: boolean }>`
   && {
     background-color: #10b981;
     border-color: #10b981;
@@ -268,22 +328,41 @@ const DownloadButton = styled(Button)`
     }
 
     &:disabled {
-      background-color: #a7f3d0;
-      border-color: #a7f3d0;
+      background-color: ${({ $isDark }) => ($isDark ? "#064e3b" : "#a7f3d0")};
+      border-color: ${({ $isDark }) => ($isDark ? "#064e3b" : "#a7f3d0")};
+      color: ${({ $isDark }) => ($isDark ? "#6ee7b7" : "white")};
     }
   }
 `;
 
-const EmptyState = styled(motion.div)`
+const EmptyState = styled(motion.div)<{ $isDark: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: white;
+  background: ${({ $isDark }) =>
+    $isDark ? darkTheme.cardBg : lightTheme.cardBg};
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ $isDark }) =>
+    $isDark ? darkTheme.shadow : lightTheme.shadow};
   text-align: center;
+  border: 1px solid
+    ${({ $isDark }) => ($isDark ? darkTheme.border : lightTheme.border)};
+`;
+
+const ThemeToggle = styled.div`
+  position: absolute;
+  top: 80px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1000;
+
+  @media (max-width: 376px) {
+    top: 110px;
+  }
 `;
 
 const formatFileSize = (bytes: number): string => {
@@ -314,7 +393,28 @@ export default function ImageConverter() {
   const [isConverting, setIsConverting] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [api, contextHolder] = notification.useNotification();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const dropZoneRef = useRef<HTMLDivElement>(null);
+
+  // Load theme preference from localStorage on initial render
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("aj-theme");
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === "dark");
+    } else {
+      // Default to dark mode if no preference is saved
+      setIsDarkMode(true);
+    }
+  }, []);
+
+  // Save theme preference to localStorage when it changes
+  useEffect(() => {
+    localStorage.setItem("aj-theme", isDarkMode ? "dark" : "light");
+  }, [isDarkMode]);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   const showNotification = (
     type: "success" | "error",
@@ -545,259 +645,315 @@ export default function ImageConverter() {
 
   return (
     <Layout>
-    <Container>
-      {contextHolder}
-      <MainContent>
-        <LeftPanel
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Title level={4} style={{ color: "#4f46e5", marginBottom: 24 }}>
-            <ImageIcon
-              size={20}
-              style={{ marginRight: 12, verticalAlign: "middle" }}
-            />
-            Upload & Convert
-          </Title>
-
-          <input
-            type="file"
-            id="file-upload"
-            style={{ display: "none" }}
-            accept="image/*"
-            onChange={handleFileInput}
-            multiple
+      <Container $isDark={isDarkMode}>
+        {contextHolder}
+        <ThemeToggle>
+          <Switch
+            checked={isDarkMode}
+            onChange={toggleTheme}
+            checkedChildren={<Moon size={14} style={{ marginTop: "5px" }} />}
+            unCheckedChildren={<Sun size={14} />}
           />
-
-          <DropZone
-            ref={dropZoneRef}
-            isdragging={isDragging.toString()}
-            onDragEnter={handleDragEvents}
-            onDragOver={handleDragEvents}
-            onDragLeave={handleDragEvents}
-            onDrop={handleDrop}
-            onClick={() => document.getElementById("file-upload")?.click()}
-            whileHover={{ scale: 1.01 }}
+          <Text style={{ color: isDarkMode ? "#e5e5e5" : "#1a1a1a" }}>
+            {isDarkMode ? "Dark" : "Light"} Mode
+          </Text>
+        </ThemeToggle>
+        <MainContent>
+          <LeftPanel
+            $isDark={isDarkMode}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
           >
-            <UploadIconWrapper>
-              <Upload size={48} />
-            </UploadIconWrapper>
-            <Title level={5} style={{ color: "#4f46e5", marginBottom: 8 }}>
-              Drag & Drop your images here
-            </Title>
-            <Text style={{ color: "#64748b", fontSize: 14 }}>
-              or click to browse files (Max 10 images)
-            </Text>
-            <HintText
-              animate={{ y: [0, 5, 0] }}
-              transition={{ repeat: Infinity, duration: 2 }}
-            >
-              <ChevronsDown size={16} />
-              <span>Supports JPG, PNG, WebP formats</span>
-            </HintText>
-          </DropZone>
-
-          {images.length > 0 && (
-            <>
-              <QualityControl>
-                <div>
-                  <Text
-                    strong
-                    style={{
-                      color: "#4f46e5",
-                      display: "block",
-                      marginBottom: 12,
-                    }}
-                  >
-                    Output Format
-                  </Text>
-                  <Select
-                    value={selectedFormat}
-                    onChange={setSelectedFormat}
-                    style={{ width: "100%" }}
-                    size="large"
-                    disabled={isConverting}
-                  >
-                    <Option value="webp">WebP (Recommended)</Option>
-                    <Option value="png">PNG (Lossless)</Option>
-                    <Option value="jpeg">JPEG (Compatible)</Option>
-                  </Select>
-                </div>
-
-                <div style={{ marginTop: 16 }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: 8,
-                    }}
-                  >
-                    <Text strong style={{ color: "#4f46e5" }}>
-                      Quality: {quality}%
-                    </Text>
-                    <Tooltip title="Higher quality means larger file size">
-                      <Info size={16} color="#64748b" />
-                    </Tooltip>
-                  </div>
-                  <Slider
-                    min={10}
-                    max={100}
-                    step={5}
-                    value={quality}
-                    onChange={setQuality}
-                    disabled={isConverting}
-                    trackStyle={{ backgroundColor: "#4f46e5" }}
-                    handleStyle={{
-                      borderColor: "#4f46e5",
-                      boxShadow: "0 0 0 4px rgba(79, 70, 229, 0.2)",
-                    }}
-                  />
-                </div>
-              </QualityControl>
-
-              <ActionButtons>
-                <ConvertButton
-                  onClick={convertAllImages}
-                  disabled={isConverting}
-                  loading={isConverting}
-                  icon={<ImageIcon size={18} />}
-                >
-                  Convert All
-                </ConvertButton>
-
-                <DownloadButton
-                  onClick={downloadAll}
-                  disabled={
-                    !images.some((img) => img.converted) || isConverting
-                  }
-                  icon={<Download size={18} />}
-                >
-                  Download All
-                </DownloadButton>
-              </ActionButtons>
-            </>
-          )}
-        </LeftPanel>
-
-        <RightPanel
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Title level={4} style={{ color: "#4f46e5", marginBottom: 24 }}>
-            <ImageIcon
-              size={20}
-              style={{ marginRight: 12, verticalAlign: "middle" }}
-            />
-            Image Gallery ({images.length})
-          </Title>
-
-          {images.length === 0 ? (
-            <EmptyState
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+            <Title
+              level={4}
+              style={{
+                color: isDarkMode ? "#6366f1" : "#4f46e5",
+                marginBottom: 24,
+              }}
             >
               <ImageIcon
-                size={48}
-                color="#d1d5db"
-                style={{ marginBottom: 16 }}
+                size={20}
+                style={{ marginRight: 12, verticalAlign: "middle" }}
               />
-              <Text type="secondary" style={{ fontSize: 14 }}>
-                No images uploaded yet. Drag & drop or click to upload.
+              Upload & Convert
+            </Title>
+
+            <input
+              type="file"
+              id="file-upload"
+              style={{ display: "none" }}
+              accept="image/*"
+              onChange={handleFileInput}
+              multiple
+            />
+
+            <DropZone
+              ref={dropZoneRef}
+              isdragging={isDragging.toString()}
+              $isDark={isDarkMode}
+              onDragEnter={handleDragEvents}
+              onDragOver={handleDragEvents}
+              onDragLeave={handleDragEvents}
+              onDrop={handleDrop}
+              onClick={() => document.getElementById("file-upload")?.click()}
+              whileHover={{ scale: 1.01 }}
+            >
+              <UploadIconWrapper $isDark={isDarkMode}>
+                <Upload size={48} />
+              </UploadIconWrapper>
+              <Title
+                level={5}
+                style={{
+                  color: isDarkMode ? "#6366f1" : "#4f46e5",
+                  marginBottom: 8,
+                }}
+              >
+                Drag & Drop your images here
+              </Title>
+              <Text
+                style={{
+                  color: isDarkMode ? "#a1a1aa" : "#64748b",
+                  fontSize: 14,
+                }}
+              >
+                or click to browse files (Max 10 images)
               </Text>
-            </EmptyState>
-          ) : (
-            <ImageGrid layout transition={{ staggerChildren: 0.1 }}>
-              <AnimatePresence>
-                {images.map((img) => (
-                  <ImageCard
-                    key={img.id}
-                    layout
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {img.converted && (
-                      <ConvertedBadge
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: "spring", stiffness: 500 }}
+              <HintText
+                $isDark={isDarkMode}
+                animate={{ y: [0, 5, 0] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+              >
+                <ChevronsDown size={16} />
+                <span>Supports JPG, PNG, WebP formats</span>
+              </HintText>
+            </DropZone>
+
+            {images.length > 0 && (
+              <>
+                <QualityControl $isDark={isDarkMode}>
+                  <div>
+                    <Text
+                      strong
+                      style={{
+                        color: isDarkMode ? "#6366f1" : "#4f46e5",
+                        display: "block",
+                        marginBottom: 12,
+                      }}
+                    >
+                      Output Format
+                    </Text>
+                    <Select
+                      value={selectedFormat}
+                      onChange={setSelectedFormat}
+                      style={{ width: "100%" }}
+                      size="large"
+                      disabled={isConverting}
+                      popupClassName={isDarkMode ? "dark-select-dropdown" : ""}
+                    >
+                      <Option value="webp">WebP (Recommended)</Option>
+                      <Option value="png">PNG (Lossless)</Option>
+                      <Option value="jpeg">JPEG (Compatible)</Option>
+                    </Select>
+                  </div>
+
+                  <div style={{ marginTop: 16 }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        marginBottom: 8,
+                      }}
+                    >
+                      <Text
+                        strong
+                        style={{ color: isDarkMode ? "#6366f1" : "#4f46e5" }}
                       >
-                        {img.format?.toUpperCase()}
-                      </ConvertedBadge>
-                    )}
-                    <ImagePreview
-                      src={img.preview}
-                      alt="Preview"
-                      whileHover={{ scale: 1.03 }}
+                        Quality: {quality}%
+                      </Text>
+                      <Tooltip title="Higher quality means larger file size">
+                        <Info
+                          size={16}
+                          color={isDarkMode ? "#a1a1aa" : "#64748b"}
+                        />
+                      </Tooltip>
+                    </div>
+                    <Slider
+                      min={10}
+                      max={100}
+                      step={5}
+                      value={quality}
+                      onChange={setQuality}
+                      disabled={isConverting}
+                      trackStyle={{
+                        backgroundColor: isDarkMode ? "#6366f1" : "#4f46e5",
+                      }}
+                      handleStyle={{
+                        borderColor: isDarkMode ? "#6366f1" : "#4f46e5",
+                        boxShadow: `0 0 0 4px rgba(${
+                          isDarkMode ? "99, 102, 241" : "79, 70, 229"
+                        }, 0.2)`,
+                      }}
                     />
-                    <ImageInfo>
-                      <ImageName>{img.file.name}</ImageName>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <ImageSize>
-                          <span>Original:</span>
-                          <strong>
-                            {formatFileSize(img.originalSize || 0)}
-                          </strong>
-                        </ImageSize>
-                        {img.convertedSize && (
-                          <ImageSize>
-                            <span>Converted:</span>
-                            <strong
-                              style={{
-                                color:
-                                  img.convertedSize < (img.originalSize || 0)
-                                    ? "#10b981"
-                                    : "#ef4444",
-                              }}
-                            >
-                              {formatFileSize(img.convertedSize)}
+                  </div>
+                </QualityControl>
+
+                <ActionButtons>
+                  <ConvertButton
+                    $isDark={isDarkMode}
+                    onClick={convertAllImages}
+                    disabled={isConverting}
+                    loading={isConverting}
+                    icon={<ImageIcon size={18} />}
+                  >
+                    Convert All
+                  </ConvertButton>
+
+                  <DownloadButton
+                    $isDark={isDarkMode}
+                    onClick={downloadAll}
+                    disabled={
+                      !images.some((img) => img.converted) || isConverting
+                    }
+                    icon={<Download size={18} />}
+                  >
+                    Download All
+                  </DownloadButton>
+                </ActionButtons>
+              </>
+            )}
+          </LeftPanel>
+
+          <RightPanel
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Title
+              level={4}
+              style={{
+                color: isDarkMode ? "#6366f1" : "#4f46e5",
+                marginBottom: 24,
+              }}
+            >
+              <ImageIcon
+                size={20}
+                style={{ marginRight: 12, verticalAlign: "middle" }}
+              />
+              Image Gallery ({images.length})
+            </Title>
+
+            {images.length === 0 ? (
+              <EmptyState
+                $isDark={isDarkMode}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <ImageIcon
+                  size={48}
+                  color={isDarkMode ? "#444" : "#d1d5db"}
+                  style={{ marginBottom: 16 }}
+                />
+                <Text type="secondary" style={{ fontSize: 14 }}>
+                  No images uploaded yet. Drag & drop or click to upload.
+                </Text>
+              </EmptyState>
+            ) : (
+              <ImageGrid layout transition={{ staggerChildren: 0.1 }}>
+                <AnimatePresence>
+                  {images.map((img) => (
+                    <ImageCard
+                      key={img.id}
+                      $isDark={isDarkMode}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
+                      {img.converted && (
+                        <ConvertedBadge
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 500 }}
+                        >
+                          {img.format?.toUpperCase()}
+                        </ConvertedBadge>
+                      )}
+                      <ImagePreview
+                        $isDark={isDarkMode}
+                        src={img.preview}
+                        alt="Preview"
+                        whileHover={{ scale: 1.03 }}
+                      />
+                      <ImageInfo>
+                        <ImageName $isDark={isDarkMode}>
+                          {img.file.name}
+                        </ImageName>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <ImageSize $isDark={isDarkMode}>
+                            <span>Original:</span>
+                            <strong>
+                              {formatFileSize(img.originalSize || 0)}
                             </strong>
                           </ImageSize>
-                        )}
-                      </div>
-                    </ImageInfo>
+                          {img.convertedSize && (
+                            <ImageSize $isDark={isDarkMode}>
+                              <span>Converted:</span>
+                              <strong
+                                style={{
+                                  color:
+                                    img.convertedSize < (img.originalSize || 0)
+                                      ? "#10b981"
+                                      : "#ef4444",
+                                }}
+                              >
+                                {formatFileSize(img.convertedSize)}
+                              </strong>
+                            </ImageSize>
+                          )}
+                        </div>
+                      </ImageInfo>
 
-                    {img.progress && img.progress < 100 ? (
-                      <Progress percent={img.progress} size="small" />
-                    ) : (
-                      <ImageActions>
-                        <Button
-                          size="middle"
-                          icon={<Trash2 size={16} />}
-                          onClick={() => removeImage(img.id)}
-                          danger
-                          style={{ fontWeight: 500 }}
-                        />
-                        <Button
-                          type="primary"
-                          size="middle"
-                          icon={<Download size={16} />}
-                          onClick={() => downloadImage(img)}
-                          disabled={!img.converted}
-                          style={{
-                            background: "#10b981",
-                            borderColor: "#10b981",
-                            fontWeight: 500,
-                          }}
-                        />
-                      </ImageActions>
-                    )}
-                  </ImageCard>
-                ))}
-              </AnimatePresence>
-            </ImageGrid>
-          )}
-        </RightPanel>
-      </MainContent>
-    </Container></Layout>
+                      {img.progress && img.progress < 100 ? (
+                        <Progress percent={img.progress} size="small" />
+                      ) : (
+                        <ImageActions>
+                          <Button
+                            size="middle"
+                            icon={<Trash2 size={16} />}
+                            onClick={() => removeImage(img.id)}
+                            danger
+                            style={{ fontWeight: 500 }}
+                          />
+                          <Button
+                            type="primary"
+                            size="middle"
+                            icon={<Download size={16} />}
+                            onClick={() => downloadImage(img)}
+                            disabled={!img.converted}
+                            style={{
+                              background: "#10b981",
+                              borderColor: "#10b981",
+                              fontWeight: 500,
+                            }}
+                          />
+                        </ImageActions>
+                      )}
+                    </ImageCard>
+                  ))}
+                </AnimatePresence>
+              </ImageGrid>
+            )}
+          </RightPanel>
+        </MainContent>
+      </Container>
+    </Layout>
   );
 }

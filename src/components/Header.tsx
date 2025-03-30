@@ -9,6 +9,7 @@ import {
   FileText,
   Calendar,
   BotMessageSquare,
+  Image,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -31,6 +32,11 @@ const Header = () => {
           icon: <BotMessageSquare className="w-6 h-6" />,
           text: "Ask AI",
         };
+      case "/image-converter/":
+        return {
+          icon: <Image className="w-6 h-6" />,
+          text: "Image Converter",
+        };
       default:
         return { icon: "🚀", text: "Note Sync" };
     }
@@ -39,7 +45,7 @@ const Header = () => {
   const { icon, text } = getHeaderContent();
 
   return (
-    <header className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 to-purple-700 text-white p-4 shadow-lg flex justify-between items-center  ">
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 to-purple-700 text-white p-2 shadow-lg flex justify-between items-center  ">
       <Link
         href="/"
         className="text-2xl font-bold tracking-wide flex items-center gap-2 drop-shadow-lg"
