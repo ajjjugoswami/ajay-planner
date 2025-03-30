@@ -4,7 +4,9 @@ const nextConfig = {
   trailingSlash: true,
   reactStrictMode: true,
   images: { unoptimized: true },
-  
+  compiler: {
+    styledComponents: true
+  }
 }
 
 

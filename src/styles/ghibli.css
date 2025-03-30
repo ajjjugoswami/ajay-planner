@@ -1,0 +1,67 @@
+.ghibli-converter {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+  }
+  
+  .ghibli-converter h1 {
+    color: #4a6b6f;
+    margin-bottom: 10px;
+  }
+  
+  .ghibli-converter p {
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .controls {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .controls button {
+    padding: 10px 20px;
+    background-color: #7fa7a9;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .controls button:hover {
+    background-color: #5d8a8c;
+  }
+  
+  .controls button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .image-preview {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+  
+  .preview-container {
+    max-width: 400px;
+  }
+  
+  .preview-container h3 {
+    color: #4a6b6f;
+    margin-bottom: 10px;
+  }
+  
+  .preview-container img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
