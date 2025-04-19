@@ -206,15 +206,16 @@ export default function TimeConverter() {
       className="w-full max-w-8xl mx-auto px-4 py-0"
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left Column - Converter or World Clock */}
         <div className="lg:col-span-2 bg-white rounded-xl shadow-lg overflow-hidden">
           <div
-            className="p-6"
+            className="p-4 sm:p-6"
             style={{
               background: `linear-gradient(to right, ${COLORS.primary}, ${COLORS.secondary})`,
               color: "#ffffff",
             }}
           >
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -226,19 +227,20 @@ export default function TimeConverter() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  className="flex-shrink-0"
                 >
                   <circle cx="12" cy="12" r="10"></circle>
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                   <path d="M2 12h20"></path>
                 </svg>
                 <div>
-                  <h1 className="text-2xl font-bold m-0">World Time Converter</h1>
-                  <p className="text-white/80 mt-1">
+                  <h1 className="text-xl sm:text-2xl font-bold m-0">World Time Converter</h1>
+                  <p className="text-white/80 text-sm sm:text-base mt-1">
                     Convert time between any time zones around the world
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-lg">
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-lg w-full sm:w-auto justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="20"
@@ -253,16 +255,16 @@ export default function TimeConverter() {
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                <span className="font-medium">India: {indiaTime}</span>
+                <span className="font-medium text-sm sm:text-base">India: {indiaTime}</span>
               </div>
             </div>
           </div>
 
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {/* Left side tabs */}
-            <div className="flex border-b mb-6">
+            <div className="flex border-b mb-6 overflow-x-auto">
               <button
-                className={`flex items-center gap-2 px-4 py-2 font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 font-medium whitespace-nowrap ${
                   leftTab === "converter"
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500"
@@ -287,7 +289,7 @@ export default function TimeConverter() {
                 Time Converter
               </button>
               <button
-                className={`flex items-center gap-2 px-4 py-2 font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 font-medium whitespace-nowrap ${
                   leftTab === "clock"
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500"
@@ -343,11 +345,11 @@ export default function TimeConverter() {
 
         {/* Right Column - Converted Times or Recent Searches */}
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             {/* Right side tabs */}
-            <div className="flex border-b mb-6">
+            <div className="flex border-b mb-6 overflow-x-auto">
               <button
-                className={`flex items-center gap-2 px-4 py-2 font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 font-medium whitespace-nowrap ${
                   rightTab === "converted"
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500"
@@ -371,7 +373,7 @@ export default function TimeConverter() {
                 Converted Times
               </button>
               <button
-                className={`flex items-center gap-2 px-4 py-2 font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 font-medium whitespace-nowrap ${
                   rightTab === "recent"
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500"
