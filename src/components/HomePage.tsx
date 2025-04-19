@@ -31,13 +31,7 @@ const sections = [
     description: "Easily convert time zones.",
     color: "text-yellow-600 dark:text-yellow-400",
   },
-  {
-    href: "/planner",
-    icon: NotebookPen,
-    title: "Planner",
-    description: "Plan your tasks and stay organized.",
-    color: "text-purple-600 dark:text-purple-400",
-  },
+   
   {
     href: "/notes",
     icon: CalendarCheck,
@@ -45,13 +39,7 @@ const sections = [
     description: "Set and manage your notes easily.",
     color: "text-indigo-600 dark:text-indigo-400",
   },
-  {
-    href: "/ask-ai",
-    icon: MessageSquare,
-    title: "Ask from AI",
-    description: "Get instant answers from AI.",
-    color: "text-blue-600 dark:text-blue-400",
-  },
+   
   {
     href: "/resume-builder",
     icon: FileText,

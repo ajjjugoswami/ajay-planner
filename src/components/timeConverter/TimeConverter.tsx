@@ -26,6 +26,26 @@ interface RecentSearch {
   timestamp: number;
 }
 
+const STORAGE_KEY = 'recentTimeSearches';
+
+const saveRecentSearchesToStorage = (searches: RecentSearch[]) => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(searches));
+  } catch (error) {
+    console.error('Failed to save recent searches to localStorage', error);
+  }
+};
+
+const loadRecentSearchesFromStorage = (): RecentSearch[] => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (error) {
+    console.error('Failed to load recent searches from localStorage', error);
+    return [];
+  }
+};
+
 export default function TimeConverter() {
   // Left side tabs
   const [leftTab, setLeftTab] = useState<"converter" | "clock">("converter");
@@ -35,8 +55,7 @@ export default function TimeConverter() {
 
   // Time converter state
   const [inputTime, setInputTime] = useState<string>(new Date().toISOString());
-  const [sourceTimeZone, setSourceTimeZone] =
-    useState<string>("America/Chicago");
+  const [sourceTimeZone, setSourceTimeZone] = useState<string>("America/Chicago");
   const [targetTimeZones, setTargetTimeZones] = useState<string[]>([
     "Asia/Kolkata",
   ]);
@@ -48,6 +67,25 @@ export default function TimeConverter() {
     message: "",
     type: "",
   });
+  const [indiaTime, setIndiaTime] = useState<string>("");
+
+  // Initialize from localStorage and set up India time
+  useEffect(() => {
+    const storedSearches = loadRecentSearchesFromStorage();
+    if (storedSearches.length > 0) {
+      setRecentSearches(storedSearches);
+    }
+    
+    const updateIndiaTime = () => {
+      const now = new Date();
+      const formatted = formatInTimeZone(now, "Asia/Kolkata", "h:mm:ss a");
+      setIndiaTime(formatted);
+    };
+    
+    updateIndiaTime();
+    const interval = setInterval(updateIndiaTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Show notification
   const showNotification = (message: string, type = "success") => {
@@ -90,15 +128,16 @@ export default function TimeConverter() {
       setRightTab("converted");
 
       // Add to recent searches
-      setRecentSearches((prev) => [
-        {
-          sourceTime: inputTime,
-          sourceZone: sourceTimeZone,
-          targetZones: [...targetTimeZones],
-          timestamp: Date.now(),
-        },
-        ...prev.slice(0, 4),
-      ]);
+      const newRecentSearch = {
+        sourceTime: inputTime,
+        sourceZone: sourceTimeZone,
+        targetZones: [...targetTimeZones],
+        timestamp: Date.now(),
+      };
+      
+      const updatedSearches = [newRecentSearch, ...recentSearches.slice(0, 4)];
+      setRecentSearches(updatedSearches);
+      saveRecentSearchesToStorage(updatedSearches);
 
       showNotification("Time converted successfully!");
     } catch (err) {
@@ -117,6 +156,17 @@ export default function TimeConverter() {
     setRightTab("converted");
     setTimeout(convertTime, 100);
   };
+
+  // Delete a recent search
+  const deleteRecentSearch = (timestamp: number) => {
+    const updatedSearches = recentSearches.filter(
+      (search) => search.timestamp !== timestamp
+    );
+    setRecentSearches(updatedSearches);
+    saveRecentSearchesToStorage(updatedSearches);
+    showNotification("Search deleted", "info");
+  };
+
   // Use current time
   const useCurrentTime = () => {
     setInputTime(new Date().toISOString());
@@ -148,7 +198,6 @@ export default function TimeConverter() {
     }
   };
 
- 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -157,7 +206,7 @@ export default function TimeConverter() {
       className="w-full max-w-8xl mx-auto px-4 py-0"
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-         <div className="lg:col-span-2 bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-lg overflow-hidden">
           <div
             className="p-6"
             style={{
@@ -165,50 +214,100 @@ export default function TimeConverter() {
               color: "#ffffff",
             }}
           >
-            <div className="flex items-center gap-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                <path d="M2 12h20"></path>
-              </svg>
-              <h1 className="text-2xl font-bold m-0">World Time Converter</h1>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                  <path d="M2 12h20"></path>
+                </svg>
+                <div>
+                  <h1 className="text-2xl font-bold m-0">World Time Converter</h1>
+                  <p className="text-white/80 mt-1">
+                    Convert time between any time zones around the world
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-lg">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span className="font-medium">India: {indiaTime}</span>
+              </div>
             </div>
-            <p className="text-white/80 mt-1">
-              Convert time between any time zones around the world
-            </p>
           </div>
 
           <div className="p-6">
             {/* Left side tabs */}
             <div className="flex border-b mb-6">
               <button
-                className={`px-4 py-2 font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 font-medium ${
                   leftTab === "converter"
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500"
                 }`}
                 onClick={() => setLeftTab("converter")}
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                  <line x1="8" y1="21" x2="16" y2="21"></line>
+                  <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
                 Time Converter
               </button>
               <button
-                className={`px-4 py-2 font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 font-medium ${
                   leftTab === "clock"
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500"
                 }`}
                 onClick={() => setLeftTab("clock")}
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
                 World Clock
               </button>
             </div>
@@ -248,23 +347,51 @@ export default function TimeConverter() {
             {/* Right side tabs */}
             <div className="flex border-b mb-6">
               <button
-                className={`px-4 py-2 font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 font-medium ${
                   rightTab === "converted"
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500"
                 }`}
                 onClick={() => setRightTab("converted")}
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
                 Converted Times
               </button>
               <button
-                className={`px-4 py-2 font-medium ${
+                className={`flex items-center gap-2 px-4 py-2 font-medium ${
                   rightTab === "recent"
                     ? "text-blue-600 border-b-2 border-blue-600"
                     : "text-gray-500"
                 }`}
                 onClick={() => setRightTab("recent")}
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                  <path d="M12 8v4l3 3"></path>
+                </svg>
                 Recent Searches
               </button>
             </div>
@@ -279,12 +406,30 @@ export default function TimeConverter() {
                   }}
                 />
               ) : (
-                <p className="text-gray-500">No conversions yet.</p>
+                <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="48"
+                    height="48"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                  </svg>
+                  <p className="mt-4">No conversions yet</p>
+                </div>
               )
             ) : (
               <RecentSearches
                 recentSearches={recentSearches}
                 loadRecentSearch={loadRecentSearch}
+                deleteRecentSearch={deleteRecentSearch}
               />
             )}
           </div>
