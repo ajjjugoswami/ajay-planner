@@ -25,6 +25,13 @@ const sections = [
     color: "text-pink-600 dark:text-pink-400",
   },
   {
+    href: "/time-converter",
+    icon: CalendarCheck,  
+    title: "Time Converter",
+    description: "Easily convert time zones.",
+    color: "text-yellow-600 dark:text-yellow-400",
+  },
+  {
     href: "/planner",
     icon: NotebookPen,
     title: "Planner",
@@ -59,7 +66,8 @@ const sections = [
     description: "Generate custom QR codes easily.",
     color: "text-green-600 dark:text-green-400",
   },
- 
+  
+
 ];
 
 const HomePage = () => {
