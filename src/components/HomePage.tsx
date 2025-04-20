@@ -86,13 +86,12 @@ export default function Dashboard() {
       });
       setCurrentTime(formattedTime);
     };
-  
+
     updateCurrentTime(); // set once on mount
     const interval = setInterval(updateCurrentTime, 1000);
-  
+
     return () => clearInterval(interval); // cleanup on unmount
   }, []);
-  
 
   return (
     <div
@@ -127,7 +126,7 @@ export default function Dashboard() {
                 </h1>
               </div>
               <p className={`${darkMode ? "text-gray-300" : "text-gray-600"}`}>
-                Here's what you can do today. Current time:{" "}
+                Here&apos;s what you can do today. Current time:{" "}
                 <span className="font-mono">{currentTime}</span>
               </p>
             </div>
