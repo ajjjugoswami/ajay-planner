@@ -34,6 +34,7 @@ import {
 import styled, { keyframes, css } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { Layout } from "@/components/Layout";
+import Header from "@/components/Header";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -396,25 +397,7 @@ export default function ImageConverter() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const dropZoneRef = useRef<HTMLDivElement>(null);
 
-  // Load theme preference from localStorage on initial render
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("aj-theme");
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === "dark");
-    } else {
-      // Default to dark mode if no preference is saved
-      setIsDarkMode(true);
-    }
-  }, []);
-
-  // Save theme preference to localStorage when it changes
-  useEffect(() => {
-    localStorage.setItem("aj-theme", isDarkMode ? "dark" : "light");
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+ 
 
   const showNotification = (
     type: "success" | "error",
@@ -643,21 +626,26 @@ export default function ImageConverter() {
     };
   }, [images]);
 
+  useEffect(() => {
+    const storedMode = localStorage.getItem("darkMode");
+    if (storedMode) {
+      setIsDarkMode(storedMode === "true");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDarkMode((prevMode: boolean) => {
+      localStorage.setItem("darkMode", String(!prevMode));
+      return !prevMode;
+    });
+  };
+
   return (
     <Layout>
+      <Header darkMode={isDarkMode} toggleDarkMode={toggleTheme}/>
       <Container $isDark={isDarkMode}>
         {contextHolder}
-        <ThemeToggle>
-          <Switch
-            checked={isDarkMode}
-            onChange={toggleTheme}
-            checkedChildren={<Moon size={14} style={{ marginTop: "5px" }} />}
-            unCheckedChildren={<Sun size={14} />}
-          />
-          <Text style={{ color: isDarkMode ? "#e5e5e5" : "#1a1a1a" }}>
-            {isDarkMode ? "Dark" : "Light"} Mode
-          </Text>
-        </ThemeToggle>
+        
         <MainContent>
           <LeftPanel
             $isDark={isDarkMode}
@@ -855,9 +843,9 @@ export default function ImageConverter() {
                   color={isDarkMode ? "#444" : "#d1d5db"}
                   style={{ marginBottom: 16 }}
                 />
-                <Text type="secondary" style={{ fontSize: 14 }}>
+                <h1   style={{ fontSize: 14 ,color:"#FFFFFF"}} >
                   No images uploaded yet. Drag & drop or click to upload.
-                </Text>
+                </h1>
               </EmptyState>
             ) : (
               <ImageGrid layout transition={{ staggerChildren: 0.1 }}>
