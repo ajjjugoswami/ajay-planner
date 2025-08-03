@@ -5,39 +5,37 @@ import { DeviceFrameset } from "react-device-frameset";
 import "react-device-frameset/styles/marvel-devices.min.css";
 
 export default function Home() {
-type DeviceType =
-  | "iPhone 8"
-  | "iPhone 8 Plus"
-  | "iPhone X"
-  | "iPhone 5s"
-  | "iPhone 4s"
-  | "Galaxy Note 8"
-  | "Samsung Galaxy S5"
-  | "Nexus 5"
-  | "HTC One"
-  | "MacBook Pro"
-  | "Lumia 920"
-  | "iPad Mini";
-
+  type DeviceType =
+    | "iPhone 8"
+    | "iPhone 8 Plus"
+    | "iPhone X"
+    | "iPhone 5s"
+    | "iPhone 4s"
+    | "Galaxy Note 8"
+    | "Samsung Galaxy S5"
+    | "Nexus 5"
+    | "HTC One"
+    | "MacBook Pro"
+    | "Lumia 920"
+    | "iPad Mini";
 
   const [device, setDevice] = useState<DeviceType>("iPhone X");
   const [url, setUrl] = useState("https://example.com");
 
-const devices: DeviceType[] = [
-  "iPhone 8",
-  "iPhone 8 Plus",
-  "iPhone X",
-  "iPhone 5s",
-  "iPhone 4s",
-  "Galaxy Note 8",
-  "Samsung Galaxy S5",
-  "Nexus 5",
-  "HTC One",
-  "MacBook Pro",
-  "Lumia 920",
-  "iPad Mini",
-];
-
+  const devices: DeviceType[] = [
+    "iPhone 8",
+    "iPhone 8 Plus",
+    "iPhone X",
+    "iPhone 5s",
+    "iPhone 4s",
+    "Galaxy Note 8",
+    "Samsung Galaxy S5",
+    "Nexus 5",
+    "HTC One",
+    "MacBook Pro",
+    "Lumia 920",
+    "iPad Mini",
+  ];
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -68,13 +66,17 @@ const devices: DeviceType[] = [
         </label>
       </div>
       <div className="flex-1 flex justify-center items-center p-6 overflow-auto bg-gray-100">
-        <DeviceFrameset device={device} color="black" >
+        <DeviceFrameset device={device} color="black">
           <iframe
             src={url}
             title="preview"
             width="100%"
             height="100%"
-            className="rounded border"
+            className="w-full h-full border-none"
+            scrolling="auto" // allow scroll if needed
+            style={{
+              border: "none",
+            }}
           />
         </DeviceFrameset>
       </div>

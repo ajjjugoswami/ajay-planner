@@ -35,7 +35,6 @@ import styled, { keyframes, css } from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { Layout } from "@/components/Layout";
 import Header from "@/components/Header";
-
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
 
