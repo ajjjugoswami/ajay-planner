@@ -75,14 +75,14 @@ export default function Dashboard() {
       color: "from-green-500 to-emerald-600",
       href: "/qr-generator",
     },
-    // {
-    //   id: 6,
-    //   name: "SEO Optimizer",
-    //   description: "Analyze and improve your website's SEO.",
-    //   icon: <Search className="w-6 h-6" />,
-    //   color: "from-teal-400 to-lime-500",
-    //   href: "/seo-optimizer",
-    // },
+    {
+      id: 6,
+      name: "Device Preview",
+      description: "Preview and test your website on various devices.",
+      icon: <Search className="w-6 h-6" />,
+      color: "from-teal-400 to-lime-500",
+      href: "/device",
+    },
     
   ];
 
