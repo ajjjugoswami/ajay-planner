@@ -69,18 +69,18 @@ export default function Dashboard() {
     },
     {
       id: 5,
-      name: "QR Generator",
-      description: "Generate custom QR codes easily.",
+      name: "Resume Builder 2.0",
+      description: "Create resumes effortlessly.",
       icon: <QrCode className="w-6 h-6" />,
       color: "from-green-500 to-emerald-600",
-      href: "/qr-generator",
+      href: "/resume-maker",
     },
     {
       id: 6,
       name: "Device Preview",
       description: "Preview and test your website on various devices.",
       icon: <Search className="w-6 h-6" />,
-      color: "from-teal-400 to-lime-500",
+      color: "from-pink-500 to-purple-600",
       href: "/device",
     },
     
