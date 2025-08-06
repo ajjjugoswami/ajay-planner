@@ -154,14 +154,60 @@ body {
   overflow: hidden;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Custom scrollbar for elements with 'scrollable-content' class */
+.scrollable-content::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure the line numbers div aligns with the editor's padding */
+.relative > div:first-child + div {
+  /* This targets the line number div */
+  padding-top: 16px; /* Match editor padding */
+}
+
+/* Custom syntax highlighting tokens */
+.token.comment {
+  color: #61afef; /* Blue */
+}
+.token.keyword {
+  color: #c678dd; /* Purple */
+}
+.token.tag {
+  color: #e06c75; /* Red */
+}
+.token.tagName {
+  color: #e06c75; /* Red */
+}
+.token.attrName {
+  color: #d19a66; /* Orange */
+}
+.token.attrValue {
+  color: #98c379; /* Green */
+}
+.token.string {
+  color: #98c379; /* Green */
+}
+.token.number {
+  color: #d19a66; /* Orange */
+}
+.token.punctuation {
+  color: #abb2bf; /* Gray */
 }
 
 @layer base {
