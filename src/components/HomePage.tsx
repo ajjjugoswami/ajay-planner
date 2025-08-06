@@ -69,11 +69,11 @@ export default function Dashboard() {
     },
     {
       id: 5,
-      name: "Resume Builder 2.0",
-      description: "Create resumes effortlessly.",
+      name: "QR Generator",
+      description: "Generate custom QR codes easily.",
       icon: <QrCode className="w-6 h-6" />,
       color: "from-green-500 to-emerald-600",
-      href: "/resume-maker",
+      href: "/qr-generator",
     },
     {
       id: 6,
@@ -83,7 +83,6 @@ export default function Dashboard() {
       color: "from-pink-500 to-purple-600",
       href: "/device",
     },
-    
   ];
 
   useEffect(() => {
