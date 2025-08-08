@@ -131,7 +131,7 @@ export default function Dashboard() {
               <div className="flex items-center space-x-3 mb-2">
                 <Star className="w-6 h-6 text-yellow-400" />
                 <h1 className="text-2xl md:text-3xl font-bold">
-                  Hello! Welcome to Your Dashboard
+                  Hello! Welcome to Your Dashboard !
                 </h1>
               </div>
               <p className={`${darkMode ? "text-gray-300" : "text-gray-600"}`}>
